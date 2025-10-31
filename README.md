@@ -1,4 +1,4 @@
-#Data Analyst
+#**Data Analyst**
 
 #Education
 
