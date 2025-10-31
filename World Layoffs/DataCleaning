@@ -1,3 +1,210 @@
 -- SQL Project- World Layoffs 
 -- https://www.kaggle.com/datasets/swaptr/layoffs-2022
 -- Cleaning
+
+
+select * 
+From layoffs;
+
+#0. Make a copy of the dataset
+#1. Remove duplicates 
+#2. Standardize the data
+#3. Null values or Blank Values
+#4. Remove any columns not necessary
+
+#0. Make a blank copy of the layoffs table
+Create table layoffs_raw
+Like layoffs;
+
+select * 
+From layoffs_raw;
+
+#Insert the data from layoffs to layoffs_raw
+Insert into layoffs_raw
+select *
+from layoffs;
+
+select * 
+From layoffs_raw;
+
+#1. Remove duplicates 
+select *, row_number() OVER(
+Partition BY ompany,location,industry,total_laid_off,
+percentage_laid_off,`date`,stage,country,funds_raised_millions) as row_num
+from layoffs;
+
+With duplicate_cte AS #Make a CTE
+(select *, row_number() OVER(
+Partition BY company,location,industry,total_laid_off,
+percentage_laid_off,`date`,stage,country,funds_raised_millions) as row_num
+from layoffs
+)
+select * 
+from duplicate_cte
+where row_num > 1 ;
+
+select * 
+From layoffs_raw
+where company ='casper';
+
+CREATE TABLE `layoffs2` (
+  `company` varchar(512) DEFAULT NULL,
+  `location` varchar(512) DEFAULT NULL,
+  `industry` varchar(512) DEFAULT NULL,
+  `total_laid_off` int DEFAULT NULL,
+  `percentage_laid_off` varchar(512) DEFAULT NULL,
+  `date` varchar(512) DEFAULT NULL,
+  `stage` varchar(512) DEFAULT NULL,
+  `country` varchar(512) DEFAULT NULL,
+  `funds_raised_millions` int DEFAULT NULL,
+  `row_num` int
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+select *
+from layoffs2;
+
+Insert into layoffs2
+select *, row_number() OVER(
+Partition BY company,location,industry,total_laid_off,
+percentage_laid_off,`date`,stage,country,funds_raised_millions) as row_num #Partion over all the columns
+from layoffs;
+
+select *
+from layoffs2
+where row_num > 1;
+
+#Removes the duplicate
+delete
+from layoffs2
+where row_num > 1;
+
+select * 
+from layoffs2
+where row_num > 1;
+
+select *
+from layoffs2;
+
+
+#2.Standardize the data
+select *
+from layoffs2;
+
+select distinct(company)
+from layoffs2;
+#Remove the white space from company name
+select company, trim(company)
+from layoffs2;
+
+#update the table with the trim company name
+update layoffs2
+set company = trim(company);
+
+select distinct industry
+from layoffs2
+order by 1;
+
+#Update industry where crypto, crypto currency and cryptoCurrency to Crypto
+select *
+from layoffs2
+where industry like "crypt%";
+
+update layoffs2
+set industry = 'Crypto'
+where industry like 'crypt%';
+
+#Update the country
+select distinct country
+from layoffs2
+order by 1;
+
+select distinct country
+from layoffs2
+where country like "United States%"
+order by 1;
+
+update layoffs2
+set country = "United States" #Or can TRIM(Trailing,'.',from country)
+where country like 'United States%';
+
+#Changing the Date column from text to datetime and update table
+select `date`,
+str_to_date(`date`,'%m/%d/%Y') #str_to_date(column,date_format)
+from layoffs2;
+
+update layoffs2
+set `date` = str_to_date(`date`,'%m/%d/%Y')
+;
+
+select `date`
+from layoffs2;
+
+#Change date datatype to DATE
+alter table layoffs2 
+modify column `date` DATE;
+
+
+
+#3. Null values or Blank Values
+select *
+from layoffs2;
+
+select *
+from layoffs2
+where total_laid_off is NULL
+And percentage_laid_off is NULL
+;
+
+select distinct industry
+from layoffs2;
+
+select *
+from layoffs2
+where industry is null
+Or industry = ''; #blank
+
+#Change the Blanks to NULLS
+update layoffs2 
+set industry = NULL
+where industry = '';
+
+
+select *
+from layoffs2
+where company ="Airbnb"
+;
+
+#Self join so that the industry is populated
+select * 
+from layoffs2 t1
+Join layoffs2 t2
+	on t1.company = t2.company
+	and t1.location = t2.location
+where (t1.industry is NULL or t1.industry = '')
+and t2.industry is not null
+;
+
+update layoffs2 t1
+Join layoffs2 t2
+	on t1.company = t2.company
+SET t1.industry = t2.industry
+where (t1.industry is NULL)
+and t2.industry is not null
+;
+
+
+#4. Remove any columns not necessary
+
+#Remove Null value rows
+delete 
+from layoffs2
+where total_laid_off is NULL
+and percentage_laid_off is NULL;
+
+#Remove row_num column
+alter table layoffs2
+drop column row_num;
+
+select *
+from layoffs2;
+
