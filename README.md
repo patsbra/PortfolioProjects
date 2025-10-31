@@ -1,8 +1,8 @@
 **Data Analyst**
 
 **Education**
-- Database Administration Certificate * *Austin Community College (_2020_)*					       		
-- B.S. Geology * *University of Houston (_2015_)* 			        		
+- Database Administration Certificate  *Austin Community College (_2020_)*					       		
+- B.S. Geology  *University of Houston (_2015_)* 			        		
 
 **Certification**
 - Microsoft Technology Associate - Database Fundamentals (_2019_)
@@ -10,11 +10,6 @@
 
 **Work Experience**
 
-[comment]:**Position (YEARS)**
-[comment]:* *Comapny* *
-[comment]:  - Big Impact Project 1
-[comment]: - Big Impact Project 2
-  
 **Lead Data Analyst & Data Analyst (_2022 - 2025_)**
 * *U.S Department of Agriculture*
   - Led a regional data analytics team, coordinating with national and regional offices to execute joint analysis projects and manage schedules, workloads, and work sessions.  
