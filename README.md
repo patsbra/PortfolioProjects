@@ -32,5 +32,7 @@
 
 
 **Projects**
-  - [Project Name](#my-custom-anchor-point)
-    - Summary
+  - [World Layoffs](https://github.com/patsbra/PortfolioProjects/tree/af1f9b336de4247ad26a1b464d3f7144a4fcf9b6/World%20Layoffs)
+    -  Transformed the World Layoffs dataset into a clean, analysis-ready table by removing duplicates, standardizing fields, and handling missing values.
+ - [Project Name](link)
+    -  summary
