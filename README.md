@@ -1,8 +1,8 @@
 **Data Analyst**
 
 **Education**
-- Database Administration Certificate  *Austin Community College (_2020_)*					       		
-- B.S. Geology  *University of Houston (_2015_)* 			        		
+- Database Administration Certificate  *Austin Community College (2020)*	       		
+- B.S. Geology  *University of Houston (2015)* 			        		
 
 **Certification**
 - Microsoft Technology Associate - Database Fundamentals (_2019_)
