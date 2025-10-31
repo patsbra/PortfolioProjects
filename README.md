@@ -7,6 +7,9 @@
 **Certification**
 - Microsoft Technology Associate - Database Fundamentals (_2019_)
 
+**Skills**
+- Technical: SQL, Excel, Power BI, Tableau, Data Governance, Database Administration
+- Professional: Team Leadership, Cross-Agency Collaboration, Stakeholder Communication, Customer Service, Project Coordination
 
 **Work Experience**
 
