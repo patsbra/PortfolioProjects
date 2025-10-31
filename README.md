@@ -34,5 +34,5 @@
 
 
 **Projects**
-[Project Name](#my-custom-anchor-point)
+  - [Project Name](#my-custom-anchor-point)
   - Summary
