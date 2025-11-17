@@ -47,10 +47,10 @@
   - Aggregates layoffs by company and year using a CTE.
   - Calculates a ranking per year with `DENSE_RANK()` to handle ties.
   - Filters to only include the top 5 companies per year.
-  <details>
-  <summary>View full SQL query</summary>
+
+<details><summary>View full SQL query</summary>
   
-  ```sql
+```sql
   -- Identify the top 5 companies with the most layoffs each year
   WITH company_year_cte AS (
       SELECT 
@@ -70,16 +70,16 @@
   SELECT *
   FROM company_year_rank_cte
   WHERE ranking <= 5;
-</details>
+```
 
 
 * **Retail Store Sales: Dirty for Data Cleaning**
   - Ensure all Item values are complete and accurate before analysis.
   - Pre-update validation and data preparation for missing Item values.
-  <details>
-  <summary>View full SQL query</summary>
+
+<details><summary>View full SQL query</summary>
   
-  ```sql
+```sql
   -- Preview changes and prepare valid items for update
 
   SELECT 
@@ -113,6 +113,7 @@
   -- Subquery creates a reference of non-NULL Items per Category & Price_Per_Unit
   -- JOIN matches target rows to source reference
   -- Only updates rows where target.Item IS NULL
+  
 </details>
 
 
