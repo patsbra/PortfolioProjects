@@ -71,7 +71,7 @@
   FROM company_year_rank_cte
   WHERE ranking <= 5;
 </details>
-```
+
 
 * **Retail Store Sales: Dirty for Data Cleaning**
   - Ensure all Item values are complete and accurate before analysis.
@@ -114,5 +114,5 @@
   -- JOIN matches target rows to source reference
   -- Only updates rows where target.Item IS NULL
 </details>
-```
+
 
