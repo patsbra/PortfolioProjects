@@ -35,5 +35,9 @@
   - [World Layoffs](https://github.com/patsbra/PortfolioProjects/tree/68dbc766672890b44b868275760b1b18d1c1e321/World%20Layoffs)
     -  Transformed the World Layoffs dataset into a clean, analysis-ready table by removing duplicates, standardizing fields, and handling missing values.
     -  Explored global layoffs to identify trends—ranked companies and industries by total layoffs, tracked yearly changes, and highlighted the biggest single layoff events.
- - [Project Name](link)
-    -  summary
+ - [Retail Store Sales: Dirty for Data Cleaning](https://github.com/patsbra/PortfolioProjects/tree/f2d0e9b39a0640f409794d6cb528cb03eb3b7721/Retail%20Sales-Dirty%20Data)
+   - Cleaned Retail Store Sales data—fixed invalid dates, standardized fields, resolved mismatches, and filled missing values.
+   - Performed SQL-based EDA using joins, aggregates, and window functions to analyze revenue by item, location, and month, identify top-selling products, and evaluate customer spending trends.
+     
+
+
