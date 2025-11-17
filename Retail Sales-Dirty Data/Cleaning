@@ -95,8 +95,8 @@ from retail_store_sales
 ;
 #7-Are there any outliers in the Total Spent column (e.g., unusually high or low values)?
 select 
-max(Total_Spent) as min_spent,
-min(Total_Spent) as max_spent,
+max(Total_Spent) as max_spent,
+min(Total_Spent) as min_spent,
 AVG(Total_Spent) AS mean_spent,
 STDDEV(Total_Spent) AS std_dev,
 COUNT(*) AS total_records
