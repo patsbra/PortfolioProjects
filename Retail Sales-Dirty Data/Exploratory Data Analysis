@@ -1,1 +1,206 @@
+#Retail Store Sales: Dirty for Data Cleaning
+#https://www.kaggle.com/datasets/ahmedmohamed2003/retail-store-sales-dirty-for-data-cleaning
+/*    
+	  1-What is the total number of transactions in the dataset?
+    2-How many unique items/products are sold in the store?
+    3-What is the total revenue generated from all sales transactions?
+    4-Which item has the highest total sales revenue?
+    5-What is the average quantity of items purchased per transaction?
+	  6-How many transactions have missing or null values in the Item column?
+    7-What is the total number of transactions for each payment method?
+    8-Which location generates the most revenue?
+    9-What is the distribution of transactions across different months?
+    10-How many duplicate transaction records exist in the dataset?
+    11-What is the average price per unit for each item category?
+    12-Which day of the week has the highest number of transactions?
+    13-What percentage of transactions have missing values in the Location column?
+    14-What is the total revenue generated per month?
+    15-Which item has been sold in the highest quantity overall?
+    16-What is the average transaction value (Total Spent) per customer?
+    17-How many transactions fall within each price range (e.g., 0-50, 51-100, 101-200)?
+    18-What is the most popular payment method used by customers?
+    19-Which location has the lowest average transaction value?
+    20-What is the year-over-year revenue growth based on transaction dates?
+    */
+    
+   # 1-What is the total number of transactions in the dataset?
+   show tables from RetailSales_DirtyDataset;
+   select count(*) as "Transactions_Count"
+   from clean_retail_store_sales;   
+
+   # 2-How many unique items/products are sold in the store?
+   select *
+   from clean_retail_store_sales;   
+   
+   select count(distinct(Item)) as "Count_of_Distinct_Items"
+   from clean_retail_store_sales; 
+   
+   # 3-What is the total revenue generated from all sales transactions?
+	select *
+   from clean_retail_store_sales;   
+   
+   select sum(Total_Spent)
+   from clean_retail_store_sales; 
+   
+#4-Which item has the highest total sales revenue?
+select Item, sum(Total_Spent) as Total_Sale
+   from clean_retail_store_sales
+   group by 1
+   order by Total_Sale desc
+   limit 1
+   ; 
+
+# 5-What is the average quantity of items purchased per transaction?
+select AVG(Quantity),Transaction_ID
+from  clean_retail_store_sales
+group by Transaction_ID;
+
+#6-How many transactions have missing or null values in the Item column?
+select * from 
+clean_retail_store_sales;
+
+select count(*) as Transaction_with_NULL
+from clean_retail_store_sales
+where Item is NULL;
+ 
+#7-What is the total number of transactions for each payment method?
+select Payment_Method, count(*)
+from clean_retail_store_sales
+group by Payment_Method;
+
+# 8-Which location generates the most revenue?   
+select Location,sum(Total_Spent)
+from clean_retail_store_sales
+group by Location
+order by 2 desc
+limit 1;
+
+#9-What is the distribution of transactions across different months?
+select count(*) as Transactions, MONTH(Transaction_DATE)
+from clean_retail_store_sales
+group by 2
+order by 2;
+
+#11-What is the average price per unit for each item category?
+select item, avg(Price_Per_Unit)
+from clean_retail_store_sales
+group by 1
+order by 1;
+
+ #12-Which day of the week has the highest number of transactions?
+ select DAYNAME(`Transaction_Date`) as `DayName`, count(*) as Transactions
+ from clean_retail_store_sales
+ group by 1
+;
+CREATE TABLE Name_of_Days (
+    day varchar(256),
+    day_num int
+    );
+Insert into Name_of_Days
+Values
+("Sunday",1), 
+("Monday",2 ),
+("Tuesday",3), 
+("Wednesday",4), 
+("Thursday",5), 
+("Friday",6),
+("Saturday",7)
+;
+
+select DAYNAME(`Transaction_Date`) as `DayName`, count(*) as Transactions
+ from clean_retail_store_sales as crss
+ inner join  Name_of_Days as nod 
+ on DAYNAME(crss.Transaction_Date) = nod.`day`
+ group by 1
+ ;
+
+#13-What percentage of transactions have missing values in the Location column?
+SELECT 
+    COUNT(*) AS total_transactions,
+    SUM(CASE WHEN Location IS NULL THEN 1 ELSE 0 END) AS missing_location_count,
+    ROUND(
+        (SUM(CASE WHEN Location IS NULL THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+        2
+    ) AS pct_missing_location
+FROM clean_retail_store_sales;
+
+#14-What is the total revenue generated per month?
+select MONTH(Transaction_Date),MONTHNAME(Transaction_Date), sum(Total_Spent)
+from clean_retail_store_sales
+group by 1,2
+order by 1;
+
+ #15-Which item has been sold in the highest quantity overall?
+ select max(Quantity), item
+ from clean_retail_store_sales
+ group by 2
+ ;
+
+ #16-What is the average transaction value (Total Spent) per customer?
+ select Customer_ID, avg(Total_Spent)
+ from clean_retail_store_sales
+ group by 1
+ order by 2 desc;
+  
+#17-How many transactions fall within each price range (e.g., 0-50, 51-100, 101-200)?
+SELECT 
+    COUNT(*) AS total_transactions,
+    SUM(CASE WHEN Total_Spent BETWEEN 0 and 50  THEN 1 ELSE 0 END) as `Price_0-50`,
+	SUM(CASE WHEN Total_Spent BETWEEN 51 and 100  THEN 1 ELSE 0 END) as `Price_51-100`,
+    SUM(CASE WHEN Total_Spent BETWEEN 101 and 200  THEN 1 ELSE 0 END) as `Price_101-200`
+FROM clean_retail_store_sales;
+
+# other option
+SELECT 
+    CASE 
+        WHEN Total_Spent BETWEEN 0 AND 50 THEN '0-50'
+        WHEN Total_Spent BETWEEN 51 AND 100 THEN '51-100'
+        WHEN Total_Spent BETWEEN 101 AND 200 THEN '101-200'
+        ELSE '200+'
+    END AS Price_Range,
+    COUNT(*) AS Transactions
+FROM clean_retail_store_sales
+GROUP BY Price_Range
+ORDER BY MIN(Total_Spent);
+
+ #18-What is the most popular payment method used by customers?
+ select count(*) as `Transactions`, Payment_Method
+ from clean_retail_store_sales
+ group by 2
+ order by 1 desc
+ limit 1;
+   
+#19-Which location has the lowest average transaction value?
+select *
+from clean_retail_store_sales;
+
+select Location, avg(Total_Spent)
+from clean_retail_store_sales
+group by 1
+order by 2 asc
+limit 1;
+
+
+#20-What is the year-over-year revenue growth based on transaction dates?
+select sum(Total_Spent) AS Total_Revenue, YEAR(Transaction_Date) as `Year`
+from clean_retail_store_sales
+group by 2
+order by 2;
+
+with yearly_revenue_cte as
+(
+select sum(Total_Spent) AS Total_Revenue, YEAR(Transaction_Date) as `Year`
+from clean_retail_store_sales
+group by 2
+)SELECT 
+    Year,
+    Total_Revenue,
+    LAG(Total_Revenue) OVER (ORDER BY Year) AS Prev_Year_Revenue,
+    Total_Revenue - LAG(Total_Revenue) OVER (ORDER BY Year) AS Diff_Year_Revenue,
+    ROUND(
+        ((Total_Revenue - LAG(Total_Revenue) OVER (ORDER BY Year)) / LAG(Total_Revenue) OVER (ORDER BY Year)) * 100,
+        2
+    ) AS YoY_Growth_Percent
+FROM yearly_revenue_cte
+ORDER BY Year;
 
