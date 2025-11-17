@@ -48,8 +48,6 @@
   - <details><summary>View full SQL query</summary>
 ```sql
 -- Identify the top 5 companies with the most layoffs each year
-    #Filter the rankings by the top five per year
-   #Uses 2 CTEs and dense_rank
 
 WITH company_year_cte AS (
     SELECT 
