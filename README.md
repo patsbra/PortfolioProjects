@@ -67,8 +67,9 @@ company_year_rank_cte AS (
 SELECT *
 FROM company_year_rank_cte
 WHERE ranking <= 5;
-    </details>
 ```
+</details>
+
 * Retail Store Sales: Dirty for Data Cleaning*
   - Ensure all Item values are complete and accurate in the Retail Store Sales table before analysis.
   - Performed a pre-update validation to check missing Item values and prepare a reference of valid items for each Category and Price_Per_Unit.
@@ -108,5 +109,6 @@ GROUP BY
     #JOIN ON = matches rows based on Category AND Price_Per_Unit
     #SET target.Item = source.Item = copies the Item from source to target
     #WHERE target.Item IS NULL = only updates rows that currently have NULL#
-    </details>
+    
 ```
+</details>
