@@ -1,2 +1,384 @@
 #Retail Store Sales: Dirty for Data Cleaning
-#Dataset - https://www.kaggle.com/datasets/ahmedmohamed2003/retail-store-sales-dirty-for-data-cleaning
+#https://www.kaggle.com/datasets/ahmedmohamed2003/retail-store-sales-dirty-for-data-cleaning
+
+/*
+Cleaning
+	1-Make a copy of the dataset
+    2-How many records contain NULL or empty values in any column?
+    3-Which columns have the highest number of missing values?
+    4-Are there any transactions with negative quantities or prices?
+    5-How many records have invalid or inconsistent date formats?
+    6-What percentage of records have missing customer IDs?
+    7-Are there any outliers in the Total Spent column (e.g., unusually high or low values)?
+    8-How many records contain special characters or invalid entries in the Item Name column?
+    9-Are there any inconsistent product names (e.g., "Laptop" vs "laptop" vs "LAPTOP")?
+    10-How many transactions have a quantity of zero or NULL?
+    11-Are there records where the calculated total (Price × Quantity) doesn't match the Total Spent column?
+    12-How many unique spellings or variations exist for each location name?
+    13-What is the range of dates in the dataset, and are there any dates in the future or unrealistic past?
+    14-Are there any invalid payment method entries beyond the expected categories?
+    15-How many records have price values of zero or negative amounts?
+    16-Are there any records where any customer paid more that the avg price_per_unit
+	17- Create a new table named clean_retail_store_sales
+    18-Update the table to calculate Price_Per_Unit if Total_Spent and Quantity is not NULL
+	19-Update the table to delete records where Total_Spent and Quantity is NULL
+    20-Update the column to fill the Item column based on the Category and Unit Price
+
+*/
+
+select * from 
+retail_store_sales;
+
+#Cleaning
+#1-Make a copy of the dataset
+drop table if exists retail_store_sales_raw;
+create table retail_store_sales_raw
+like retail_store_sales;
+
+insert into retail_store_sales_raw
+select * from retail_store_sales;
+
+select * from
+retail_store_sales;
+    
+select count(*) from
+retail_store_sales
+where Item is NULL;
+
+#2-How many records contain NULL or empty values in any column?
+select 
+count(*) - count(Item) as null_items, 
+count(*) - count(Price_Per_Unit) as null_price_per_unit, 
+count(*) - count(Quantity) as null_quantity, 
+count(*) - count(Total_Spent) as null_total_spent,
+count(*) - count(Discount_Applied) as null_discount_applied
+From retail_store_sales
+;
+
+ #3-Which columns have the highest number of missing values?
+ SHOW COLUMNS FROM retail_store_sales;
+select 
+count(Item),
+count(Price_Per_Unit),
+count(Quantity), 
+count(Total_Spent),
+count(Discount_Applied)
+From retail_store_sales
+
+;
+ 
+#4-Are there any transactions with negative quantities or prices?
+select *
+from retail_store_sales
+where Quantity <0 
+OR Total_Spent <0
+OR Price_Per_Unit <0
+;
+
+#5-How many records have invalid or inconsistent date formats?
+describe retail_store_sales;
+
+#6-What percentage of records have missing customer IDs?
+select *
+from retail_store_sales
+;
+select 
+count(Customer_ID) as count_CID,
+count(*)-count(Customer_ID) as count_NULL_CID
+from retail_store_sales
+;
+select 
+count(Customer_ID) as count_CID,
+count(*)-count(Customer_ID) as count_NULL_CID,
+((count(*)-count(Customer_ID)) / count(*)) * 100 as per_NULL_CID
+from retail_store_sales
+;
+#7-Are there any outliers in the Total Spent column (e.g., unusually high or low values)?
+select 
+max(Total_Spent) as min_spent,
+min(Total_Spent) as max_spent,
+AVG(Total_Spent) AS mean_spent,
+STDDEV(Total_Spent) AS std_dev,
+COUNT(*) AS total_records
+from retail_store_sales
+;
+
+select 
+count(*) as Spend_More_Than_AVG
+from retail_store_sales
+where Total_Spent > (select AVG(Total_Spent) from retail_store_sales)
+;
+
+#customers that spend more than avg
+select 
+Customer_ID,
+Category,
+Item,
+Total_Spent,
+Transaction_Date
+from retail_store_sales
+where Total_Spent > (select AVG(Total_Spent) from retail_store_sales)
+group by 
+Customer_ID,
+Category,
+Item,
+Total_Spent,
+Transaction_Date
+order by Customer_ID
+;
+
+select *
+from retail_store_sales
+order by Total_Spent desc
+limit 10
+;
+ 
+#Category with the most transactions over the mean
+select 
+Category,
+Count(*) as Transaction_Count
+from retail_store_sales
+Where Total_Spent > (select AVG(Total_Spent) from retail_store_sales)
+group by 1
+order by Transaction_Count desc
+;
+ 
+#8-How many records contain special characters or invalid entries in the Item Name column?
+select * from
+retail_store_sales;
+
+SELECT count(*)
+FROM retail_store_sales
+WHERE Item  REGEXP '[^a-zA-Z0-9]' 
+;
+SELECT count(*)
+FROM retail_store_sales
+WHERE Item  is not null
+;
+SELECT count(*) as no_underscore
+FROM retail_store_sales
+WHERE Item  not LIKE "%_%";
+
+#9-Are there any inconsistent Category names (e.g., "Laptop" vs "laptop" vs "LAPTOP")?
+ select category
+ from retail_store_sales
+ group by category;
+ 
+ #10-How many transactions have a quantity of zero or NULL?
+ select count(*) quantity_count_null_zero
+ from retail_store_sales
+ where quantity = 0 or quantity is NULL;
+ 
+select *
+ from retail_store_sales
+ where quantity = 0 or quantity is NULL;
+ 
+# 11-Are there records where the calculated total (Price × Quantity) doesn't match the Total Spent column?
+
+select *
+from retail_store_sales
+where Total_Spent != (Price_Per_Unit * Quantity)
+;
+
+#Changes the NULL values into zeros allowing for the math
+select  *, ifnull(Price_Per_Unit,0) as price_zed,ifnull(Quantity,0) as quant_zed
+from retail_store_sales
+where Total_Spent != (ifnull(Price_Per_Unit,0) * ifnull(Quantity,0))
+;
+ 
+select  count(*) as zero_null_price_or_quant
+from retail_store_sales
+where Total_Spent != (ifnull(Price_Per_Unit,0) * ifnull(Quantity,0))
+;
+
+ #12-How many unique spellings or variations exist for each location name?
+ select Location, count(Location)
+ from retail_store_sales
+ group by location;
+ 
+ #13-What is the range of dates in the dataset, and are there any dates in the future or unrealistic past?
+ select min(Transaction_Date), max(Transaction_Date)
+ from retail_store_sales;
+ 
+select Transaction_Date
+ from retail_store_sales
+ where Transaction_Date is NULL
+ ;
+ 
+ select Transaction_Date
+ from retail_store_sales
+ where YEAR(Transaction_Date) > 2025
+ ;
+ 
+#14-Are there any invalid payment method entries beyond the expected categories?
+ select Payment_Method
+ from retail_store_sales
+ group by Payment_Method
+ ;
+ 
+ #15-How many records have price values of zero or negative amounts?
+ select count(*)
+ from retail_store_sales
+ where Price_Per_Unit is NULL or
+ Price_Per_Unit < 0
+ ;
+ 
+#16-Are there any records where any customer paid more that the avg price_per_unit
+select *
+from retail_store_sales
+;
+
+#Avg price per Item
+SELECT 
+    Item,
+    AVG(Price_Per_Unit) AS avg_price_for_item,
+    COUNT(*) AS transaction_count
+FROM retail_store_sales
+WHERE Price_Per_Unit IS NOT NULL
+    AND Item IS NOT NULL
+GROUP BY Item
+ORDER BY Item;
+
+#Customers who paid more than their item's average,
+WITH item_averages AS (
+    SELECT 
+        Item,
+        AVG(Price_Per_Unit) AS avg_price_for_item
+    FROM retail_store_sales
+    WHERE Price_Per_Unit IS NOT NULL
+        AND Item IS NOT NULL
+    GROUP BY Item
+)
+SELECT 
+    r.Customer_ID,
+    r.Category,
+    r.Item,
+    r.Price_Per_Unit AS price_paid,
+    ia.avg_price_for_item,
+    r.Price_Per_Unit - ia.avg_price_for_item AS amount_more_paid
+FROM retail_store_sales r
+JOIN item_averages ia ON r.Item = ia.Item
+WHERE r.Price_Per_Unit > ia.avg_price_for_item
+    AND r.Price_Per_Unit IS NOT NULL
+    AND r.Item IS NOT NULL
+ORDER BY r.Customer_ID;
+
+#Checks if there are any variation in prices per item
+SELECT 
+    Item,
+    MIN(Price_Per_Unit) AS min_price,
+    AVG(Price_Per_Unit) AS avg_price,
+    MAX(Price_Per_Unit) AS max_price,
+    MAX(Price_Per_Unit) - AVG(Price_Per_Unit) AS difference
+FROM retail_store_sales
+WHERE Price_Per_Unit IS NOT NULL
+    AND Item IS NOT NULL
+GROUP BY Item
+HAVING MAX(Price_Per_Unit) > AVG(Price_Per_Unit);
+
+
+#17- Create a new table named clean_retail_store_sales
+create table clean_retail_store_sales
+like retail_store_sales;
+
+describe clean_retail_store_sales;
+
+insert into clean_retail_store_sales
+select * from retail_store_sales;
+
+
+#18-Update the table to calculate Price_Per_Unit if Total_Spent and Quantity is not NULL
+#Calculate price per unit
+select *, (Total_Spent / Quantity) as new_PPU
+from clean_retail_store_sales
+where Total_Spent is not null and Quantity is not null
+;
+#Calculate price per unit where Price_Per_Unit is NULL
+select *, (Total_Spent / Quantity) as new_PPU
+from clean_retail_store_sales
+where Total_Spent is not null and Quantity is not null
+and Price_Per_Unit is NULL
+;
+
+#Update the table
+update clean_retail_store_sales
+set Price_Per_Unit = (Total_Spent / Quantity)
+where Total_Spent is not null and Quantity is not null
+;
+
+select * from 
+clean_retail_store_sales;
+
+
+#19-Update the table to delete records where Total_Spent and Quantity is NULL
+Delete from clean_retail_store_sales
+where Total_Spent is NULL and Quantity is NULL
+;
+select * from 
+clean_retail_store_sales;
+
+
+#20- Update the table to fill the Item column based on the Category and Price_Per_Unit
+select Category,Item, Price_Per_Unit
+from clean_retail_store_sales
+;
+
+#See rows WITH Item values (these will be our reference data)
+SELECT Category, Price_Per_Unit, Item, COUNT(*) AS count
+FROM clean_retail_store_sales
+WHERE Item IS NOT NULL
+GROUP BY Category, Price_Per_Unit, Item
+ORDER BY Category, Price_Per_Unit;
+ 
+#See rows WITHOUT Item values (these need to be filled)
+SELECT Category, Price_Per_Unit, Item, COUNT(*) AS count
+FROM clean_retail_store_sales
+WHERE Item IS NULL
+GROUP BY Category, Price_Per_Unit,Item
+ORDER BY Category, Price_Per_Unit;
+  
+#Practice run before update
+SELECT 
+    target.Category,
+    target.Price_Per_Unit,
+    target.Item AS current_item,
+    source.Item AS new_item,
+    COUNT(*) AS rows_affected
+FROM clean_retail_store_sales as target
+JOIN (
+    SELECT Category, Price_Per_Unit, Item
+    FROM clean_retail_store_sales as source
+    WHERE Item IS NOT NULL
+    GROUP BY Category, Price_Per_Unit, Item
+) source ON target.Category = source.Category 
+    AND target.Price_Per_Unit = source.Price_Per_Unit
+WHERE target.Item IS NULL
+GROUP BY target.Category, target.Price_Per_Unit, target.Item, source.Item;
+
+#target = the table we're updating
+#source = the subquery that provides the correct Item values
+#Subquery purpose is to create a list of valid Item values that are not 
+#NULL for each combination of Category and Price_Per_Unit
+#JOIN ON = matches rows based on Category AND Price_Per_Unit
+#SET target.Item = source.Item = copies the Item from source to target
+#WHERE target.Item IS NULL = only updates rows that currently have NULL#
+
+UPDATE clean_retail_store_sales as target
+JOIN (
+    SELECT Category, Price_Per_Unit, Item
+    FROM clean_retail_store_sales as source
+    WHERE Item IS NOT NULL
+    GROUP BY Category, Price_Per_Unit, Item
+) source ON target.Category = source.Category 
+    AND target.Price_Per_Unit = source.Price_Per_Unit
+SET target.Item = source.Item
+WHERE target.Item IS NULL;
+
+select *
+FROM clean_retail_store_sales;
+
+-- Check if any NULLs remain
+SELECT COUNT(*) AS remaining_nulls
+FROM clean_retail_store_sales
+WHERE Item IS NULL;
+
