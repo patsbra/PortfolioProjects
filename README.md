@@ -72,7 +72,7 @@ SELECT *
 FROM company_year_rank_cte
 WHERE ranking <= 5;
 ```
-</details>
+  </details>
 
 * **Retail Store Sales: Dirty for Data Cleaning**
   - Ensure all Item values are complete and accurate before analysis.
