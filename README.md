@@ -45,60 +45,58 @@
   - Aggregates layoffs by company and year using a CTE.
   - Calculates a ranking per year with DENSE_RANK() to handle ties.
   - Filters to only include the top 5 companies per year.
-     <details>
-<summary>View full SQL query</summary>
-#Filter the rankings by the top five per year
-#Uses 2 CTEs and dense_rank
-WITH company_year_cte as
-(
-select company, 
-substring(`date`,1,4) as `YEAR`,
-sum(total_laid_off) as total_off
-from layoffs2
-group by company, `YEAR`
-), 
-company_year_rank_cte as 
-(select * ,
-dense_rank()over(partition by `YEAR` order by total_off desc) as ranking
-from company_year_cte 
-where `YEAR` is not NULL
-
-)
-select * 
-from company_year_rank_cte
-where ranking <= 5
-;
-</details>
+  - <details><summary>View full SQL query</summary>
+    #Filter the rankings by the top five per year
+    #Uses 2 CTEs and dense_rank
+    WITH company_year_cte as
+    (
+    select company, 
+    substring(`date`,1,4) as `YEAR`,
+    sum(total_laid_off) as total_off
+    from layoffs2
+    group by company, `YEAR`
+    ), 
+    company_year_rank_cte as 
+    (select * ,
+    dense_rank()over(partition by `YEAR` order by total_off desc) as ranking
+    from company_year_cte 
+    where `YEAR` is not NULL
+    
+    )
+    select * 
+    from company_year_rank_cte
+    where ranking <= 5
+    ;
+    </details>
 
 * Retail Store Sales: Dirty for Data Cleaning*
   - Ensure all Item values are complete and accurate in the Retail Store Sales table before analysis.
   - Performed a pre-update validation to check missing Item values and prepare a reference of valid items for each Category and Price_Per_Unit.
   - Used SQL joins, aggregations, and grouping to identify affected rows and safely update missing values.
-  <details>
-<summary>View full SQL query</summary>
-  #Practice run before update
-SELECT 
-    target.Category,
-    target.Price_Per_Unit,
-    target.Item AS current_item,
-    source.Item AS new_item,
-    COUNT(*) AS rows_affected
-FROM clean_retail_store_sales as target
-JOIN (
-    SELECT Category, Price_Per_Unit, Item
-    FROM clean_retail_store_sales as source
-    WHERE Item IS NOT NULL
-    GROUP BY Category, Price_Per_Unit, Item
-) source ON target.Category = source.Category 
-    AND target.Price_Per_Unit = source.Price_Per_Unit
-WHERE target.Item IS NULL
-GROUP BY target.Category, target.Price_Per_Unit, target.Item, source.Item;
-
-#target = the table we're updating
-#source = the subquery that provides the correct Item values
-#Subquery purpose is to create a list of valid Item values that are not 
-#NULL for each combination of Category and Price_Per_Unit
-#JOIN ON = matches rows based on Category AND Price_Per_Unit
-#SET target.Item = source.Item = copies the Item from source to target
-#WHERE target.Item IS NULL = only updates rows that currently have NULL#
-</details>
+  - <details><summary>View full SQL query</summary>
+    #Preview changes before updating
+    SELECT 
+        target.Category,
+        target.Price_Per_Unit,
+        target.Item AS current_item,
+        source.Item AS new_item,
+        COUNT(*) AS rows_affected
+    FROM clean_retail_store_sales as target
+    JOIN (
+        SELECT Category, Price_Per_Unit, Item
+        FROM clean_retail_store_sales as source
+        WHERE Item IS NOT NULL
+        GROUP BY Category, Price_Per_Unit, Item
+    ) source ON target.Category = source.Category 
+        AND target.Price_Per_Unit = source.Price_Per_Unit
+    WHERE target.Item IS NULL
+    GROUP BY target.Category, target.Price_Per_Unit, target.Item, source.Item;
+    
+    #target = the table we're updating
+    #source = the subquery that provides the correct Item values
+    #Subquery purpose is to create a list of valid Item values that are not 
+    #NULL for each combination of Category and Price_Per_Unit
+    #JOIN ON = matches rows based on Category AND Price_Per_Unit
+    #SET target.Item = source.Item = copies the Item from source to target
+    #WHERE target.Item IS NULL = only updates rows that currently have NULL#
+    </details>
