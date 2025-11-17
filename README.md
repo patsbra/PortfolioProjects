@@ -51,7 +51,7 @@
   <details>
   <summary>View full SQL query</summary>
 
-sql
+```sql
 -- Identify the top 5 companies with the most layoffs each year
 WITH company_year_cte AS (
     SELECT 
@@ -71,6 +71,7 @@ company_year_rank_cte AS (
 SELECT *
 FROM company_year_rank_cte
 WHERE ranking <= 5;
+```
   </details>
 
 
@@ -81,7 +82,7 @@ WHERE ranking <= 5;
   <details>
   <summary>View full SQL query</summary>
 
-sql
+```sql
 -- Preview changes and prepare valid items for update
 SELECT 
     target.Category,
@@ -114,6 +115,6 @@ GROUP BY
 -- Subquery creates a reference of non-NULL Items per Category & Price_Per_Unit
 -- JOIN matches target rows to source reference
 -- Only updates rows where target.Item IS NULL
-
+```
   </details>
 
