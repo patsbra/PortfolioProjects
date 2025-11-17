@@ -48,8 +48,9 @@
   - Calculates a ranking per year with `DENSE_RANK()` to handle ties.
   - Filters to only include the top 5 companies per year.
 
-<details>
-<summary>View full SQL query</summary>
+  <details>
+  <summary>View full SQL query</summary>
+
 ```sql
 -- Identify the top 5 companies with the most layoffs each year
 WITH company_year_cte AS (
