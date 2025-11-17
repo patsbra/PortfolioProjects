@@ -74,48 +74,46 @@ WHERE ranking <= 5;
 ```
 </details>
 
-
 * **Retail Store Sales: Dirty for Data Cleaning**
   - Ensure all Item values are complete and accurate before analysis.
   - Pre-update validation and data preparation for missing Item values.
 
-<details>
-<summary>View full SQL query</summary>
+  <details>
+  <summary>View full SQL query</summary>
+
 ```sql
-  -- Preview changes and prepare valid items for update
+-- Preview changes and prepare valid items for update
+SELECT 
+    target.Category,
+    target.Price_Per_Unit,
+    target.Item AS current_item,
+    source.Item AS new_item,
+    COUNT(*) AS rows_affected
+FROM clean_retail_store_sales AS target
+JOIN (
+    SELECT 
+        Category, 
+        Price_Per_Unit, 
+        Item
+    FROM clean_retail_store_sales AS source
+    WHERE Item IS NOT NULL
+    GROUP BY Category, Price_Per_Unit, Item
+) AS source
+    ON target.Category = source.Category
+    AND target.Price_Per_Unit = source.Price_Per_Unit
+WHERE target.Item IS NULL
+GROUP BY 
+    target.Category, 
+    target.Price_Per_Unit, 
+    target.Item, 
+    source.Item;
 
-  SELECT 
-      target.Category,
-      target.Price_Per_Unit,
-      target.Item AS current_item,
-      source.Item AS new_item,
-      COUNT(*) AS rows_affected
-  FROM clean_retail_store_sales AS target
-  JOIN (
-      SELECT 
-          Category, 
-          Price_Per_Unit, 
-          Item
-      FROM clean_retail_store_sales AS source
-      WHERE Item IS NOT NULL
-      GROUP BY Category, Price_Per_Unit, Item
-  ) AS source
-      ON target.Category = source.Category
-      AND target.Price_Per_Unit = source.Price_Per_Unit
-  WHERE target.Item IS NULL
-  GROUP BY 
-      target.Category, 
-      target.Price_Per_Unit, 
-      target.Item, 
-      source.Item;
-
-  -- Notes:
-  -- target = the table being updated
-  -- source = subquery providing valid Item values
-  -- Subquery creates a reference of non-NULL Items per Category & Price_Per_Unit
-  -- JOIN matches target rows to source reference
-  -- Only updates rows where target.Item IS NULL
+-- Notes:
+-- target = the table being updated
+-- source = subquery providing valid Item values
+-- Subquery creates a reference of non-NULL Items per Category & Price_Per_Unit
+-- JOIN matches target rows to source reference
+-- Only updates rows where target.Item IS NULL
 ```
-</details>
-
+  </details>
 
