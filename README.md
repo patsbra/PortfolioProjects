@@ -50,7 +50,6 @@
 
 <details>
 <summary>View full SQL query</summary>
-
 ```sql
 -- Identify the top 5 companies with the most layoffs each year
 WITH company_year_cte AS (
@@ -79,10 +78,9 @@ WHERE ranking <= 5;
   - Ensure all Item values are complete and accurate before analysis.
   - Pre-update validation and data preparation for missing Item values.
 
-  <details>
-    <summary>View full SQL query</summary>
-  
-    ```sql
+<details>
+<summary>View full SQL query</summary>
+```sql
   -- Preview changes and prepare valid items for update
 
   SELECT 
@@ -116,7 +114,7 @@ WHERE ranking <= 5;
   -- Subquery creates a reference of non-NULL Items per Category & Price_Per_Unit
   -- JOIN matches target rows to source reference
   -- Only updates rows where target.Item IS NULL
-    ```
+```
 </details>
 
 
