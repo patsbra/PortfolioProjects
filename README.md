@@ -46,6 +46,7 @@
   - Calculates a ranking per year with DENSE_RANK() to handle ties.
   - Filters to only include the top 5 companies per year.
   - <details><summary>View full SQL query</summary>
+  
 ```sql
 -- Identify the top 5 companies with the most layoffs each year
 
@@ -75,6 +76,7 @@ WHERE ranking <= 5;
   - Performed a pre-update validation to check missing Item values and prepare a reference of valid items for each Category and Price_Per_Unit.
   - Used SQL joins, aggregations, and grouping to identify affected rows and safely update missing values.
   - <details><summary>View full SQL query</summary>
+  
 ```sql
 -- Preview changes before updating the table
 SELECT 
