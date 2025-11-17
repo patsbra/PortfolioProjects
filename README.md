@@ -48,7 +48,7 @@
   - Calculates a ranking per year with `DENSE_RANK()` to handle ties.
   - Filters to only include the top 5 companies per year.
 
-  <details>
+ 
   <summary>View full SQL query</summary>
 
 ```sql
@@ -72,7 +72,7 @@ SELECT *
 FROM company_year_rank_cte
 WHERE ranking <= 5;
 ```
-  </details>
+
 
 * **Retail Store Sales: Dirty for Data Cleaning**
   - Ensure all Item values are complete and accurate before analysis.
