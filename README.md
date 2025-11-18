@@ -78,7 +78,8 @@ Retail Store Sales: Dirty for Data Cleaning - Previewing Item Corrections Before
   - Ensure all Item values are complete and accurate before analysis.
   - Pre-update validation and data preparation for missing Item values.
 
-<details markdown="1"><summary>View Query</summary><p>
+<details markdown="1">
+<summary>View Query</summary><p>
 
 ```sql
 -- Preview changes and prepare valid items for update
@@ -114,6 +115,6 @@ GROUP BY
 -- JOIN matches target rows to source reference
 -- Only updates rows where target.Item IS NULL
 ```
-</p></details>
+</details>
 
 
