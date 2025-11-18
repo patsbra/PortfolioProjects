@@ -48,7 +48,7 @@
   - Calculates a ranking per year with `DENSE_RANK()` to handle ties.
   - Filters to only include the top 5 companies per year.
 
-  <details>
+  <details markdown=1>
   <summary>View full SQL query</summary>
 
 ```sql
@@ -79,7 +79,7 @@ WHERE ranking <= 5;
   - Ensure all Item values are complete and accurate before analysis.
   - Pre-update validation and data preparation for missing Item values.
 
-  <details>
+  <details markdown=1>
   <summary>View full SQL query</summary>
 
 ```sql
