@@ -1,17 +1,17 @@
 **Data Analyst**
 
-**Education**
+####Education####
 - Database Administration Certificate  *Austin Community College (2020)*	       		
 - B.S. Geology  *University of Houston (2015)* 			        		
 
-**Certification**
+####Certification####
 - Microsoft Technology Associate - Database Fundamentals (_2019_)
 
-**Skills**
+####Skills####
 - Technical: SQL, Excel, Power BI, Tableau, Data Governance, Database Administration
 - Professional: Team Leadership, Cross-Agency Collaboration, Stakeholder Communication, Customer Service, Project Coordination
 
-**Work Experience**
+####Work Experience####
 
 **Lead Data Analyst & Data Analyst (_2022 - 2025_)**
 * *U.S Department of Agriculture*
@@ -31,7 +31,7 @@
   - Improved data reliability by reviewing database structures and enforcing referential integrity across key systems.
 
 
-**Projects**
+####Projects####
   - [World Layoffs](https://github.com/patsbra/PortfolioProjects/tree/68dbc766672890b44b868275760b1b18d1c1e321/World%20Layoffs)
     -  Transformed the World Layoffs dataset into a clean, analysis-ready table by removing duplicates, standardizing fields, and handling missing values.
     -  Explored global layoffs to identify trends—ranked companies and industries by total layoffs, tracked yearly changes, and highlighted the biggest single layoff events.
@@ -40,10 +40,10 @@
    - Performed SQL-based EDA using joins, aggregates, and window functions to analyze revenue by item, location, and month, identify top-selling products, and evaluate customer spending trends.
      
 
-**Query Highlights**
+####Query Highlights####
 
-World Layoffs Project - Top 5 Companies by Annual Layoffs (CTE) Query
- - Identify the top 5 companies with the highest layoffs each year. Highlights major workforce reductions and trends.
+**World Layoffs Project - Top 5 Companies by Annual Layoffs (CTE) Query**
+  - Identify the top 5 companies with the highest layoffs each year. Highlights major workforce reductions and trends.
   - Aggregates layoffs by company and year using a CTE.
   - Calculates a ranking per year with `DENSE_RANK()` to handle ties.
   - Filters to only include the top 5 companies per year.
@@ -74,7 +74,7 @@ WHERE ranking <= 5;
 ```
 </details>
 
-Retail Store Sales: Dirty for Data Cleaning - Previewing Item Corrections Before Update (JOIN + Aggregation) Query
+**Retail Store Sales: Dirty for Data Cleaning - Previewing Item Corrections Before Update (JOIN + Aggregation) Query**
   - Ensure all Item values are complete and accurate before analysis.
   - Pre-update validation and data preparation for missing Item values.
 
