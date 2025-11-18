@@ -48,7 +48,8 @@ World Layoffs Project - Top 5 Companies by Annual Layoffs (CTE) Query
   - Calculates a ranking per year with `DENSE_RANK()` to handle ties.
   - Filters to only include the top 5 companies per year.
 
-<details markdown="1"><summary>View Query</summary><p>
+<details markdown="1">
+<summary>View Query</summary>
 
 ```sql
 -- Identify the top 5 companies with the most layoffs each year
@@ -71,7 +72,7 @@ SELECT *
 FROM company_year_rank_cte
 WHERE ranking <= 5;
 ```
-</p></details>
+</details>
 
 Retail Store Sales: Dirty for Data Cleaning - Previewing Item Corrections Before Update (JOIN + Aggregation) Query
   - Ensure all Item values are complete and accurate before analysis.
