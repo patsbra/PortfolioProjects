@@ -48,8 +48,7 @@
   - Calculates a ranking per year with `DENSE_RANK()` to handle ties.
   - Filters to only include the top 5 companies per year.
 
-  <details markdown=1>
-  <summary>View full SQL query</summary>
+  <details markdown=1><summary>View full SQL query</summary>
 
 ```sql
 -- Identify the top 5 companies with the most layoffs each year
@@ -79,8 +78,7 @@ WHERE ranking <= 5;
   - Ensure all Item values are complete and accurate before analysis.
   - Pre-update validation and data preparation for missing Item values.
 
-  <details markdown=1>
-  <summary>View full SQL query</summary>
+  <details markdown=1><summary>View full SQL query</summary>
 
 ```sql
 -- Preview changes and prepare valid items for update
