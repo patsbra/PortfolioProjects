@@ -43,6 +43,10 @@
 **Query Highlights**
 
 World Layoffs Project - Top 5 Companies by Annual Layoffs (CTE) Query
+ - Identify the top 5 companies with the highest layoffs each year. Highlights major workforce reductions and trends.
+  - Aggregates layoffs by company and year using a CTE.
+  - Calculates a ranking per year with `DENSE_RANK()` to handle ties.
+  - Filters to only include the top 5 companies per year.
 
 <details markdown="1"><summary>View Query</summary><p>
 
@@ -69,12 +73,9 @@ WHERE ranking <= 5;
 ```
 </p></details>
 
-  - Identify the top 5 companies with the highest layoffs each year. Highlights major workforce reductions and trends.
-  - Aggregates layoffs by company and year using a CTE.
-  - Calculates a ranking per year with `DENSE_RANK()` to handle ties.
-  - Filters to only include the top 5 companies per year.
-
 Retail Store Sales: Dirty for Data Cleaning - Previewing Item Corrections Before Update (JOIN + Aggregation) Query
+  - Ensure all Item values are complete and accurate before analysis.
+  - Pre-update validation and data preparation for missing Item values.
 
 <details markdown="1"><summary>View Query</summary><p>
 
@@ -114,5 +115,4 @@ GROUP BY
 ```
 </p></details>
 
-  - Ensure all Item values are complete and accurate before analysis.
-  - Pre-update validation and data preparation for missing Item values.
+
