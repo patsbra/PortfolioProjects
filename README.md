@@ -43,11 +43,7 @@
 **Query Highlights**
 
 * **World Layoffs Project**
-  - Identify the top 5 companies with the highest layoffs each year. Highlights major workforce reductions and trends.
-  - Aggregates layoffs by company and year using a CTE.
-  - Calculates a ranking per year with `DENSE_RANK()` to handle ties.
-  - Filters to only include the top 5 companies per year.
-  - <details markdown="1"><summary>View full SQL query</summary><p>
+<details markdown="1"><summary>Top 5 Companies by Annual Layoffs (CTE) Query </summary><p>
 
 ```sql
 -- Identify the top 5 companies with the most layoffs each year
@@ -71,12 +67,13 @@ FROM company_year_rank_cte
 WHERE ranking <= 5;
 ```
 </p></details>
-
+  - Identify the top 5 companies with the highest layoffs each year. Highlights major workforce reductions and trends.
+  - Aggregates layoffs by company and year using a CTE.
+  - Calculates a ranking per year with `DENSE_RANK()` to handle ties.
+  - Filters to only include the top 5 companies per year.
 
 * **Retail Store Sales: Dirty for Data Cleaning**
-  - Ensure all Item values are complete and accurate before analysis.
-  - Pre-update validation and data preparation for missing Item values.
-  - <details markdown="1"><summary>View full SQL query</summary><p>
+<details markdown="1"><summary>Previewing Item Corrections Before Update (JOIN + Aggregation) Query</summary><p>
 
 ```sql
 -- Preview changes and prepare valid items for update
@@ -113,4 +110,5 @@ GROUP BY
 -- Only updates rows where target.Item IS NULL
 ```
 </p></details>
-
+  - Ensure all Item values are complete and accurate before analysis.
+  - Pre-update validation and data preparation for missing Item values.
