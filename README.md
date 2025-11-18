@@ -79,7 +79,7 @@ Retail Store Sales: Dirty for Data Cleaning - Previewing Item Corrections Before
   - Pre-update validation and data preparation for missing Item values.
 
 <details markdown="1">
-<summary>View Query</summary><p>
+<summary>View Query</summary>
 
 ```sql
 -- Preview changes and prepare valid items for update
